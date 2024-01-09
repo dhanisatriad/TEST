@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>jawaban soal 1</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+<style>
+  body {
+    background-color: gray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    flex-direction: column;
+  }
+
+  p {
+    font-size: 24px;
+  }
+
+  #warning {
+    color: red;
+  }
+
+  #input {
+    font-size: 18px;
+  }
+
+  #output {
+    background-color: white;
+    font-size: 18px;
+    width: 15em;
+  }
+</style>
+
+<body>
+  <p>Jawaban soal 1</p>
+  <p id="warning"></p>
+  <div>
+    <input type="text" id="input" />
+    <button onclick="NMSequence()">Submit</button>
+  </div>
+  <br />
+  <p id="output">Output:</p>
+</body>
+
+<script>
+  function NMSequence() {
+    let input = document.getElementById("input").value;
+    var regex = /^[nm]+$/;
+    if (input.length > 8) {
+      document.getElementById("warning").innerHTML =
+        "Maximum length of input sequence is 8 characters";
+    } else {
+
+      
+      //n = posisi-n + jumlah-m-setelah-n +1
+      if (regex.test(input)) {
+        let sequence = [];
+        let x = 1;
+        let jumM = 0;
+        for (var i = 0; i < input.length; i++) {
+          let currentChar = input[i];
+          let q = i + 1;
+          let nextChar = input[q];
+          if (currentChar == "n") {
+            if (sequence.length == 0) {
+              sequence.push(x);
+            }
+            if (nextChar == "m") {                        //jika ada m setelah n
+              for (a = 1; q + a <= input.length; a++) {   //dapatkan jumah m yang berurutan setelah n
+                if (input[q + a - 1] === "n") {           //berhenti mencari jika loop bertemu dengan n
+                  break;
+                }
+                jumM = a;
+              }
+              x = q + jumM + 1;                           //masukan rumus posisi n + jumlah M +1
+            } else {
+              x = q + 1; //da
+            }
+            sequence.push(x);
+          }                                             
+          
+          //   m= jumlahM--
+          else if (currentChar === "m") {
+            if (sequence.length == 0) {
+              for (a = 1; q + a <= input.length; a++) {
+                if (input[q + a - 1] === "n") {
+                  break;
+                }
+              }
+              x = a + 1;
+              sequence.push(x);
+            }
+            x--;
+            sequence.push(x);
+          }
+        }
+        document.getElementById("output").innerHTML = sequence.join("");
+      } else {
+        document.getElementById("warning").innerHTML =
+          "The string does not contain only the letters 'n' and 'm'.";
+      }
+    }
+  }
+</script>
+
+</html>

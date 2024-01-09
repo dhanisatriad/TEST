@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jawaban soal 2</title>
+</head>
+
+<body>
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <title>jawaban soal 2</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <style>
+        body {
+            background-color: gray;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+
+        p {
+            font-size: 24px;
+        }
+
+        #input {
+            font-size: 18px;
+        }
+
+        #output {
+            background-color: white;
+            font-size: 18px;
+            width: 30em;
+        }
+
+        .div {
+            display: flex;
+            flex-direction: column;
+        }
+
+        button {
+            margin-top: 15px;
+        }
+
+        label {
+            margin-top: 5px;
+            font-size: 20px;
+        }
+
+        #warning {
+            color: red;
+        }
+    </style>
+
+    <body>
+        <p>Jawaban soal 2</p>
+        <p id="warning"></p>
+        <div class="div">
+            <label for="botol1">kapasitas botol 1</label>
+            <input name="botol1" type="text" id="botol1" required/>
+            <label for="botol2">kapasitas botol 2</label>
+            <input name="botol2" type="text" id="botol2" required/>
+            <label for="botol3">kapasitas botol 3</label>
+            <input name="botol3" type="text" id="botol3" required/>
+            <label for="water">Jumlah Air</label>
+            <input name="water" type="number" min="100" max="1000" id="water" placeholder="100-10000000" required/>
+            <button onclick="bottleCount()">Submit</button>
+        </div>
+        <br />
+        <p id="output">Output:</p>
+    </body>
+</body>
+
+<script>
+
+    function bottleCount() {
+        let water = document.getElementById("water").value;
+        let bot1 = document.getElementById("botol1").value;
+        let bot2 = document.getElementById("botol2").value;
+        let bot3 = document.getElementById("botol3").value;
+        const regex = /^(2|3|5|7|11|13|17|23|29)$/;
+        const regex2 = /^(100|[1-9]\d{2,6}|10000000)$/;
+
+        if (regex.test(bot1) && regex.test(bot2) && regex.test(bot3)) {
+            if (regex2.test(water)) {
+
+                let bottles = [];
+                bottles.push(bot1);
+                bottles.push(bot2);
+                bottles.push(bot3);
+                let Bmin = Math.min(...bottles); //botol dengan kapasitas terkecil
+                let res = [];
+                for (i = 1; bottles.length >= i; i++) {
+                    let Bm = Math.max(...bottles);   //botol dengan kapsitas terkecil 
+                    let index = bottles.indexOf(`${Bm}`); //dapatkan index Bm
+                    let nasi = bottles.indexOf(3); //dapatkan index Bm
+                    let result = {}
+                    result['index'] = index + 1; 
+                    result['sum'] = 0;
+                    // console.log(index);
+                    let Nb = 0;                             //Jumlah botol
+                    while (Bm <= water) {                   //lakukan loop dengan mengurangi jumlah air dengan botol kapasitas terbesar hingga air lebih sedikit dari Bm
+                        Nb++
+                        result['sum'] = Nb;                 // masukan index botol dan jumlah botol yang digunkan ke dalam res
+                        water -= Bm;
+                    }
+                    if (Bmin === Bm && water < Bmin) {      //jika botol dengan kapasitas terbesar samadengan botol kapasitas terkecil dan air masih belum sampai 0 lakukan loop satukali lagi
+                        Nb++
+                        result['sum'] = Nb;                // masukan index botol dan jumlah botol yang digunkan ke dalam res
+                        water -= Bm;
+                    }
+                    bottles[index] = 0;                   //jika loop telah selasai ubah nilai Bm menjadi 0 menjadikan botol dengan kapasitas terbesar 2 menjadi terbesar
+                    res.push(result);
+                }
+                let arrayOfStrings = [];
+                let total = 0
+                res.forEach(function (obj) {
+                
+                    // Convert each object to a string using JSON.stringify
+                    let jsonString = `Bottole ${JSON.stringify(obj.index)} = ${JSON.stringify(obj.sum)} bottles`;
+                    total=total+obj.sum;
+
+                    // Push the resulting string to a new array
+                    arrayOfStrings.push(jsonString);
+                });
+                let strToltal = `total = ${total}`;
+                arrayOfStrings.push(strToltal);
+                let hasil = arrayOfStrings.join(', ');
+                document.getElementById("output").innerHTML = hasil;
+            }
+            else {
+                document.getElementById("warning").innerHTML =
+                    "value of water must be between 1-10000000";
+            }
+        }
+        else {
+            document.getElementById("warning").innerHTML =
+                "value of botol1 botol2 & botol3 must be prime number between 1-30";
+        }
+
+
+    }
+
+</script>
+
+</html>
